@@ -56,8 +56,9 @@ strict-mode flag in `tsconfig.json` as the typecheck baseline.
   in `newhorizonweb/new-horizon-web/supabase/database-schema.sql`.
 - The Supabase JS client needs `react-native-url-polyfill/auto`
   imported once at app startup — the package is already in
-  `dependencies`; remember to import it in `App.tsx` when you add
-  Supabase usage.
+  `dependencies`; import it at the **top of `index.ts`** (the
+  `registerRootComponent` entry point) so the polyfill is installed
+  before `App` and its transitive modules are evaluated.
 - Keep navigation declarative under `@react-navigation/native`; don't
   introduce a second navigation library.
 - Run `npm run web` before opening a native simulator — it's the fastest
