@@ -6,15 +6,17 @@ Guidance for Claude Code (and humans) when working in this repository.
 
 **new-horizon** is an **Expo / React Native** mobile app, with a web target via `expo start --web`. Backend services are provided by **Supabase** (`@supabase/supabase-js`). Push notifications use `expo-notifications`; secure key storage uses `expo-secure-store`.
 
-The app lives under [`NewHorizon/`](./NewHorizon). Open that subfolder (or the repo root) in VS Code.
+The app lives under [`NewHorizon/`](./NewHorizon). **Open the repository root in VS Code** so the workspace settings, extension recommendations, and launch configs (which point into `NewHorizon/`) are loaded.
 
 ## Tech stack
 
-- Expo SDK 54 + React Native 0.81
-- React 19 + TypeScript
+The authoritative versions live in `NewHorizon/package.json` — check there if anything below drifts. At the time of writing the pins were:
+
+- Expo SDK (`expo: ~54.0.33`) + React Native (`react-native: 0.81.5`)
+- React 19 + TypeScript ~5.9
 - React Navigation (bottom tabs)
-- Supabase JS client
-- expo-notifications, expo-secure-store, expo-device
+- Supabase JS client (`@supabase/supabase-js`)
+- `expo-notifications`, `expo-secure-store`, `expo-device`, `expo-constants`
 
 ## Commands (run inside `NewHorizon/`)
 
@@ -34,7 +36,7 @@ Create `NewHorizon/.env` (or use `app.config` extras) with:
 - `EXPO_PUBLIC_SUPABASE_URL`
 - `EXPO_PUBLIC_SUPABASE_ANON_KEY`
 
-Only `EXPO_PUBLIC_*` vars are exposed to the JS bundle.
+Only `EXPO_PUBLIC_*` vars are exposed to the JS bundle. The Supabase **service_role** key must never be referenced anywhere in the client — it bypasses Row-Level Security and belongs only on a trusted server.
 
 ## Repo layout
 
@@ -47,8 +49,8 @@ Only `EXPO_PUBLIC_*` vars are exposed to the JS bundle.
 
 - Use `expo-secure-store` for tokens; never `AsyncStorage` for secrets.
 - Use Supabase RLS policies; never trust client-side filters.
-- Keep images optimized (`assets/`) and lazy-load via `react-native-fast-image`-style patterns if needed.
+- Keep images optimized (`assets/`) and use **`expo-image`** for high-performance loading and caching (compatible with the New Architecture).
 
 ## VS Code
 
-Open the repo, install recommended extensions, then run `npm start` from the integrated terminal.
+Open the repo root, install recommended extensions, then run `npm start` from the integrated terminal.
