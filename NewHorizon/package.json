@@ -18,7 +18,7 @@
     "expo-notifications": "~0.32.16",
     "expo-secure-store": "~15.0.8",
     "expo-status-bar": "~3.0.9",
-    "react": "19.1.0",
+    "react": "19.2.6",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",
     "react-native-safe-area-context": "~5.6.0",
@@ -26,7 +26,7 @@
     "react-native-url-polyfill": "^3.0.0"
   },
   "devDependencies": {
-    "@types/react": "~19.1.0",
+    "@types/react": "~19.2.15",
     "typescript": "~5.9.2"
   },
   "private": true
