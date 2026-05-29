@@ -1,1 +1,33 @@
-ewogICJuYW1lIjogIm5ld2hvcml6b24iLAogICJ2ZXJzaW9uIjogIjEuMC4wIiwKICAibWFpbiI6ICJpbmRleC50cyIsCiAgInNjcmlwdHMiOiB7CiAgICAic3RhcnQiOiAiZXhwbyBzdGFydCIsCiAgICAiYW5kcm9pZCI6ICJleHBvIHJ1bjphbmRyb2lkIiwKICAgICJpb3MiOiAiZXhwbyBydW46aW9zIiwKICAgICJ3ZWIiOiAiZXhwbyBzdGFydCAtLXdlYiIKICB9LAogICJkZXBlbmRlbmNpZXMiOiB7CiAgICAiQHJlYWN0LW5hdmlnYXRpb24vYm90dG9tLXRhYnMiOiAiXjcuMTYuMSIsCiAgICAiQHJlYWN0LW5hdmlnYXRpb24vbmF0aXZlIjogIl43LjIuMiIsCiAgICAiQHN1cGFiYXNlL3N1cGFiYXNlLWpzIjogIl4yLjEwNi4yIiwKICAgICJleHBvIjogIn41Ni4wLjMiLAogICAgImV4cG8tY29uc3RhbnRzIjogIn41Ni4wLjE0IiwKICAgICJleHBvLWRldmljZSI6ICJ+NTYuMC40IiwKICAgICJleHBvLW5vdGlmaWNhdGlvbnMiOiAifjU2LjAuMTIiLAogICAgImV4cG8tc2VjdXJlLXN0b3JlIjogIn41Ni4wLjQiLAogICAgImV4cG8tc3RhdHVzLWJhciI6ICJ+NTYuMC40IiwKICAgICJyZWFjdCI6ICIxOS4yLjYiLAogICAgInJlYWN0LW5hdGl2ZSI6ICIwLjg1LjMiLAogICAgInJlYWN0LW5hdGl2ZS1nZXN0dXJlLWhhbmRsZXIiOiAifjIuMzEuMiIsCiAgICAicmVhY3QtbmF0aXZlLXNhZmUtYXJlYS1jb250ZXh0IjogIn41LjguMCIsCiAgICAicmVhY3QtbmF0aXZlLXNjcmVlbnMiOiAifjQuMjUuMiIsCiAgICAicmVhY3QtbmF0aXZlLXVybC1wb2x5ZmlsbCI6ICJeMy4wLjAiCiAgfSwKICAiZGV2RGVwZW5kZW5jaWVzIjogewogICAgIkB0eXBlcy9yZWFjdCI6ICJ+MTkuMi4xNSIsCiAgICAidHlwZXNjcmlwdCI6ICJ+Ni4wLjMiCiAgfSwKICAicHJpdmF0ZSI6IHRydWUKfQo=
+{
+  "name": "newhorizon",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@react-navigation/bottom-tabs": "^7.16.1",
+    "@react-navigation/native": "^7.2.2",
+    "@supabase/supabase-js": "^2.106.2",
+    "expo": "~56.0.3",
+    "expo-constants": "~56.0.14",
+    "expo-device": "~56.0.4",
+    "expo-notifications": "~56.0.12",
+    "expo-secure-store": "~56.0.4",
+    "expo-status-bar": "~56.0.4",
+    "react": "19.2.6",
+    "react-native": "0.85.3",
+    "react-native-gesture-handler": "~2.31.2",
+    "react-native-safe-area-context": "~5.8.0",
+    "react-native-screens": "~4.25.2",
+    "react-native-url-polyfill": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.15",
+    "typescript": "~6.0.3"
+  },
+  "private": true
+}
