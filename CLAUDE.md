@@ -57,16 +57,16 @@ Only `EXPO_PUBLIC_*` vars are exposed to the JS bundle. The Supabase **service_r
 - **RLS-first data access**: hit the same Supabase project as `newhorizonweb`. Service identifiers (table names, RPCs like `increment_post_likes`) must match the schema in `newhorizonweb/new-horizon-web/supabase/database-schema.sql`. Never trust client-side filters — assume RLS will be the only enforcement.
 - **Polyfill order**: keep `import 'react-native-url-polyfill/auto'` at the **top of `index.ts`**, before `App` or any transitive Supabase imports are evaluated.
 - **Single navigation library**: keep navigation declarative under `@react-navigation/native`; don't introduce a second router.
-- **Performance**: prefer `expo-image` over `<Image />` for cached / progressive image loading (compatible with the New Architecture).
+- **Performance**: prefer `expo-image` over `<Image />` for cached / progressive image loading (compatible with the New Architecture). Install it first with `npx expo install expo-image` — it isn't in `package.json` yet.
 - **Web smoke test**: run `npm run web` before opening a native simulator — same JS code path, much faster feedback loop.
 - **SDK installs**: `npx expo install <pkg>` (not `npm install`) so version pins stay aligned with SDK 56.
 
 ## CI
 
-`.github/workflows/`:
+Inside `.github/`:
 
-- `codeql.yml` — CodeQL Advanced (JavaScript/TypeScript, build-mode `none`) on push/PR to `main`, plus a weekly Sunday schedule.
-- `codacy.yml` — Codacy security analysis + SARIF upload on push/PR + weekly.
+- `workflows/codeql.yml` — CodeQL Advanced (JavaScript/TypeScript, build-mode `none`) on push/PR to `main`, plus a weekly Sunday schedule.
+- `workflows/codacy.yml` — Codacy security analysis + SARIF upload on push/PR + weekly.
 - `dependabot.yml` — weekly npm updates inside `/NewHorizon` (grouped: `expo`, `react-native`, `react-navigation`) and weekly GitHub Actions updates.
 
 ## VS Code
