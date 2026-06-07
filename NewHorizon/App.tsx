@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -6,11 +7,17 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 
+type TabParamList = {
+  Home: undefined;
+  Feed: undefined;
+  Notifications: undefined;
+  Profile: undefined;
+};
+
 function Placeholder({ name }: { name: string }) {
   return (
     <View style={styles.screen}>
       <Text style={styles.text}>{name}</Text>
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -28,7 +35,7 @@ function ProfileScreen() {
   return <Placeholder name="Profile" />;
 }
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabParamList>();
 
 export default function App() {
   return (
@@ -42,6 +49,7 @@ export default function App() {
             <Tab.Screen name="Profile" component={ProfileScreen} />
           </Tab.Navigator>
         </NavigationContainer>
+        <StatusBar style="auto" />
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
