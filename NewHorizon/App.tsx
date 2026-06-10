@@ -68,7 +68,7 @@ export default function App() {
             <Tab.Screen
               name="Notifications"
               component={NotificationsScreen}
-              options={{ tabBarLabel: 'Alerts', tabBarBadge: 2 }}
+              options={{ tabBarLabel: 'Alerts' }}
             />
             <Tab.Screen name="Profile" component={ProfileScreen} />
           </Tab.Navigator>
