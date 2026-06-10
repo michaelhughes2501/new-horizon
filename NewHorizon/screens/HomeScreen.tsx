@@ -1,7 +1,7 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, radii, spacing, shadow } from '../lib/theme';
+import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
 import { STATS, JOURNEY } from '../lib/demoData';
 
 const accentMap = {
@@ -44,8 +44,14 @@ export default function HomeScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Continue your journey</Text>
         {JOURNEY.map((j) => (
-          <View key={j.title} style={[styles.card, shadow.card]}>
-            <View style={[styles.cardIcon, { backgroundColor: accentMap[j.accent] + '1A' }]}>
+          <Pressable
+            key={j.title}
+            accessibilityRole="button"
+            accessibilityLabel={`${j.title}. ${j.detail}`}
+            onPress={() => {}}
+            style={({ pressed }) => [styles.card, shadow.card, pressed && styles.cardPressed]}
+          >
+            <View style={[styles.cardIcon, { backgroundColor: addAlpha(accentMap[j.accent], 0.1) }]}>
               <Text style={styles.cardIconText}>{j.icon}</Text>
             </View>
             <View style={styles.cardBody}>
@@ -53,7 +59,7 @@ export default function HomeScreen() {
               <Text style={styles.cardDetail}>{j.detail}</Text>
             </View>
             <Text style={[styles.cardChevron, { color: accentMap[j.accent] }]}>→</Text>
-          </View>
+          </Pressable>
         ))}
       </View>
 
@@ -131,6 +137,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.mist,
   },
+  cardPressed: { opacity: 0.7, transform: [{ scale: 0.99 }] },
   cardIcon: {
     width: 46,
     height: 46,

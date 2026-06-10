@@ -1,11 +1,12 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
+import { Ionicons } from '@expo/vector-icons';
 
 import { colors } from './lib/theme';
 import HomeScreen from './screens/HomeScreen';
@@ -22,19 +23,21 @@ type TabParamList = {
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
-const TAB_GLYPHS: Record<keyof TabParamList, string> = {
-  Home: '⌂',
-  Feed: '❖',
-  Notifications: '◔',
-  Profile: '◉',
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
+
+const TAB_ICONS: Record<keyof TabParamList, IoniconName> = {
+  Home: 'home',
+  Feed: 'people',
+  Notifications: 'notifications',
+  Profile: 'person-circle',
 };
 
 function TabIcon({ name, focused }: { name: keyof TabParamList; focused: boolean }) {
+  const base = TAB_ICONS[name];
+  const iconName = (focused ? base : `${base}-outline`) as IoniconName;
   return (
     <View style={styles.tabIcon}>
-      <Text style={[styles.tabGlyph, { color: focused ? colors.gold : colors.slate }]}>
-        {TAB_GLYPHS[name]}
-      </Text>
+      <Ionicons name={iconName} size={22} color={focused ? colors.gold : colors.slate} />
       {focused && <View style={styles.tabDot} />}
     </View>
   );
@@ -87,6 +90,5 @@ const styles = StyleSheet.create({
   },
   tabLabel: { fontSize: 11, fontWeight: '600' },
   tabIcon: { alignItems: 'center', justifyContent: 'center' },
-  tabGlyph: { fontSize: 20, lineHeight: 24 },
   tabDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: colors.gold, marginTop: 2 },
 });

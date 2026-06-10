@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, radii, spacing } from '../lib/theme';
 import { STATS } from '../lib/demoData';
@@ -38,11 +38,21 @@ export default function ProfileScreen() {
 
       <View style={styles.menu}>
         {MENU.map((m, i) => (
-          <View key={m.label} style={[styles.menuRow, i < MENU.length - 1 && styles.menuDivider]}>
+          <Pressable
+            key={m.label}
+            accessibilityRole="button"
+            accessibilityLabel={m.label}
+            onPress={() => {}}
+            style={({ pressed }) => [
+              styles.menuRow,
+              i < MENU.length - 1 && styles.menuDivider,
+              pressed && styles.menuRowPressed,
+            ]}
+          >
             <Text style={styles.menuIcon}>{m.icon}</Text>
             <Text style={styles.menuLabel}>{m.label}</Text>
             <Text style={styles.menuChevron}>›</Text>
-          </View>
+          </Pressable>
         ))}
       </View>
 
@@ -96,6 +106,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   menuRow: { flexDirection: 'row', alignItems: 'center', padding: spacing.lg },
+  menuRowPressed: { backgroundColor: colors.cream },
   menuDivider: { borderBottomWidth: 1, borderBottomColor: colors.mist },
   menuIcon: { fontSize: 18, width: 30 },
   menuLabel: { flex: 1, fontSize: 15, color: colors.charcoal, fontWeight: '500' },

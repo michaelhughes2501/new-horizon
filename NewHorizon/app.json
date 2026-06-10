@@ -17,8 +17,7 @@
       "bundleIdentifier": "com.newhorizon.app",
       "buildNumber": "1",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false,
-        "NSFaceIDUsageDescription": "New Horizon uses Face ID to keep your account and saved resources secure."
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {

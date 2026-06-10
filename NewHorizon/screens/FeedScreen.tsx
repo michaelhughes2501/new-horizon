@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, radii, spacing, shadow } from '../lib/theme';
+import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
 import { FEED, FeedPost } from '../lib/demoData';
 
 function PostCard({ post }: { post: FeedPost }) {
@@ -43,6 +43,8 @@ function PostCard({ post }: { post: FeedPost }) {
   );
 }
 
+const renderItem = ({ item }: { item: FeedPost }) => <PostCard post={item} />;
+
 export default function FeedScreen() {
   const insets = useSafeAreaInsets();
 
@@ -51,7 +53,7 @@ export default function FeedScreen() {
       <FlatList
         data={FEED}
         keyExtractor={(p) => p.id}
-        renderItem={({ item }) => <PostCard post={item} />}
+        renderItem={renderItem}
         contentContainerStyle={{ padding: spacing.lg, paddingBottom: spacing.xxl }}
         ListHeaderComponent={
           <View style={{ paddingTop: insets.top + spacing.sm, paddingBottom: spacing.md }}>
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
   author: { fontSize: 15, fontWeight: '600', color: colors.charcoal },
   time: { fontSize: 12, color: colors.slate, marginTop: 1 },
   tag: {
-    backgroundColor: colors.gold + '1A',
+    backgroundColor: addAlpha(colors.gold, 0.1),
     borderRadius: radii.full,
     paddingHorizontal: spacing.md,
     paddingVertical: 4,

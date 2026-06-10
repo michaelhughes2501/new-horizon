@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, radii, spacing } from '../lib/theme';
+import { colors, radii, spacing, addAlpha } from '../lib/theme';
 import { NOTIFICATIONS } from '../lib/demoData';
 
 export default function NotificationsScreen() {
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.mist,
   },
-  rowUnread: { borderColor: colors.gold + '66', backgroundColor: '#FFFDF8' },
+  rowUnread: { borderColor: addAlpha(colors.gold, 0.4), backgroundColor: '#FFFDF8' },
   icon: {
     width: 42,
     height: 42,
