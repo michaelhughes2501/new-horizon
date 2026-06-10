@@ -1,11 +1,17 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
+
+import { colors } from './lib/theme';
+import HomeScreen from './screens/HomeScreen';
+import FeedScreen from './screens/FeedScreen';
+import NotificationsScreen from './screens/NotificationsScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 type TabParamList = {
   Home: undefined;
@@ -14,42 +20,57 @@ type TabParamList = {
   Profile: undefined;
 };
 
-function Placeholder({ name }: { name: string }) {
+const Tab = createBottomTabNavigator<TabParamList>();
+
+const TAB_GLYPHS: Record<keyof TabParamList, string> = {
+  Home: '⌂',
+  Feed: '❖',
+  Notifications: '◔',
+  Profile: '◉',
+};
+
+function TabIcon({ name, focused }: { name: keyof TabParamList; focused: boolean }) {
   return (
-    <View style={styles.screen}>
-      <Text style={styles.text}>{name}</Text>
+    <View style={styles.tabIcon}>
+      <Text style={[styles.tabGlyph, { color: focused ? colors.gold : colors.slate }]}>
+        {TAB_GLYPHS[name]}
+      </Text>
+      {focused && <View style={styles.tabDot} />}
     </View>
   );
 }
 
-function HomeScreen() {
-  return <Placeholder name="Home" />;
-}
-function FeedScreen() {
-  return <Placeholder name="Feed" />;
-}
-function NotificationsScreen() {
-  return <Placeholder name="Notifications" />;
-}
-function ProfileScreen() {
-  return <Placeholder name="Profile" />;
-}
-
-const Tab = createBottomTabNavigator<TabParamList>();
+const navTheme = {
+  ...DefaultTheme,
+  colors: { ...DefaultTheme.colors, background: colors.ivory, card: colors.white, primary: colors.gold },
+};
 
 export default function App() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
-        <NavigationContainer>
-          <Tab.Navigator>
+        <NavigationContainer theme={navTheme}>
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              headerShown: false,
+              tabBarActiveTintColor: colors.gold,
+              tabBarInactiveTintColor: colors.slate,
+              tabBarStyle: styles.tabBar,
+              tabBarLabelStyle: styles.tabLabel,
+              tabBarIcon: ({ focused }) => <TabIcon name={route.name} focused={focused} />,
+            })}
+          >
             <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Feed" component={FeedScreen} />
-            <Tab.Screen name="Notifications" component={NotificationsScreen} />
+            <Tab.Screen name="Feed" component={FeedScreen} options={{ tabBarLabel: 'The Yard' }} />
+            <Tab.Screen
+              name="Notifications"
+              component={NotificationsScreen}
+              options={{ tabBarLabel: 'Alerts', tabBarBadge: 2 }}
+            />
             <Tab.Screen name="Profile" component={ProfileScreen} />
           </Tab.Navigator>
         </NavigationContainer>
-        <StatusBar style="auto" />
+        <StatusBar style="light" />
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
@@ -57,11 +78,15 @@ export default function App() {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  screen: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  tabBar: {
+    backgroundColor: colors.white,
+    borderTopColor: colors.mist,
+    height: 64,
+    paddingTop: 6,
+    paddingBottom: 8,
   },
-  text: { fontSize: 18 },
+  tabLabel: { fontSize: 11, fontWeight: '600' },
+  tabIcon: { alignItems: 'center', justifyContent: 'center' },
+  tabGlyph: { fontSize: 20, lineHeight: 24 },
+  tabDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: colors.gold, marginTop: 2 },
 });
