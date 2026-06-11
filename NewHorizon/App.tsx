@@ -9,6 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
 
 import { colors } from './lib/theme';
+import { NOTIFICATIONS } from './lib/demoData';
 import HomeScreen from './screens/HomeScreen';
 import FeedScreen from './screens/FeedScreen';
 import NotificationsScreen from './screens/NotificationsScreen';
@@ -68,7 +69,7 @@ export default function App() {
             <Tab.Screen
               name="Notifications"
               component={NotificationsScreen}
-              options={{ tabBarLabel: 'Alerts', tabBarBadge: 2 }}
+              options={{ tabBarLabel: 'Alerts', tabBarBadge: NOTIFICATIONS.filter(n => n.unread).length || undefined }}
             />
             <Tab.Screen name="Profile" component={ProfileScreen} />
           </Tab.Navigator>
