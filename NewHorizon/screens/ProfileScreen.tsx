@@ -1,11 +1,13 @@
-import React from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { colors, radii, spacing } from '../lib/theme';
 import { STATS } from '../lib/demoData';
 import { BACKEND_READY } from '../lib/supabase';
+
+const HEADER_SCROLL_THRESHOLD = 200;
 
 const MENU = [
   { icon: '👤', label: 'Edit Profile' },
@@ -19,11 +21,25 @@ const MENU = [
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
+  const [isHeaderOverlapping, setIsHeaderOverlapping] = useState(false);
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const overlapped = event.nativeEvent.contentOffset.y > HEADER_SCROLL_THRESHOLD;
+    if (overlapped !== isHeaderOverlapping) {
+      setIsHeaderOverlapping(overlapped);
+    }
+  };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: spacing.xxl }}>
-      {/* Dark hero header at the top of this tab needs light status bar content. */}
-      {isFocused && <StatusBar style="light" />}
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: spacing.xxl }}
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
+    >
+      {/* Dark hero header at the top of this tab needs light status bar content, but
+          switches to dark once the ivory body scrolls underneath the status bar. */}
+      {isFocused && <StatusBar style={isHeaderOverlapping ? 'dark' : 'light'} />}
       <View style={[styles.header, { paddingTop: insets.top + spacing.xl }]}>
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>MJ</Text>

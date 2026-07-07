@@ -1,5 +1,5 @@
-import React from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
@@ -13,14 +13,30 @@ const accentMap = {
   rose: colors.rose,
 };
 
+const HEADER_SCROLL_THRESHOLD = 200;
+
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
+  const [isHeaderOverlapping, setIsHeaderOverlapping] = useState(false);
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const overlapped = event.nativeEvent.contentOffset.y > HEADER_SCROLL_THRESHOLD;
+    if (overlapped !== isHeaderOverlapping) {
+      setIsHeaderOverlapping(overlapped);
+    }
+  };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: spacing.xxl }}>
-      {/* Dark hero header at the top of this tab needs light status bar content. */}
-      {isFocused && <StatusBar style="light" />}
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: spacing.xxl }}
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
+    >
+      {/* Dark hero header at the top of this tab needs light status bar content, but
+          switches to dark once the ivory body scrolls underneath the status bar. */}
+      {isFocused && <StatusBar style={isHeaderOverlapping ? 'dark' : 'light'} />}
       {/* Hero */}
       <View style={[styles.hero, { paddingTop: insets.top + spacing.xl }]}>
         <View style={styles.heroGlow} />
