@@ -1,6 +1,8 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useIsFocused } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import { colors, radii, spacing } from '../lib/theme';
 import { STATS } from '../lib/demoData';
 import { BACKEND_READY } from '../lib/supabase';
@@ -16,9 +18,12 @@ const MENU = [
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
+  const isFocused = useIsFocused();
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: spacing.xxl }}>
+      {/* Dark hero header at the top of this tab needs light status bar content. */}
+      {isFocused && <StatusBar style="light" />}
       <View style={[styles.header, { paddingTop: insets.top + spacing.xl }]}>
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>MJ</Text>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useIsFocused } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
 import { FEED, FeedPost } from '../lib/demoData';
 
@@ -47,9 +49,12 @@ const renderItem = ({ item }: { item: FeedPost }) => <PostCard post={item} />;
 
 export default function FeedScreen() {
   const insets = useSafeAreaInsets();
+  const isFocused = useIsFocused();
 
   return (
     <View style={styles.container}>
+      {/* Light (ivory) content at the top of this tab needs dark status bar content. */}
+      {isFocused && <StatusBar style="dark" />}
       <FlatList
         data={FEED}
         keyExtractor={(p) => p.id}

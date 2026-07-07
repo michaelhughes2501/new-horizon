@@ -1,6 +1,8 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useIsFocused } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
 import { STATS, JOURNEY } from '../lib/demoData';
 
@@ -13,9 +15,12 @@ const accentMap = {
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
+  const isFocused = useIsFocused();
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: spacing.xxl }}>
+      {/* Dark hero header at the top of this tab needs light status bar content. */}
+      {isFocused && <StatusBar style="light" />}
       {/* Hero */}
       <View style={[styles.hero, { paddingTop: insets.top + spacing.xl }]}>
         <View style={styles.heroGlow} />
