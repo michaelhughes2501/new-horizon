@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
 import { STATS, JOURNEY } from '../lib/demoData';
@@ -48,7 +48,7 @@ export default function HomeScreen() {
             key={j.title}
             accessibilityRole="button"
             accessibilityLabel={`${j.title}. ${j.detail}`}
-            onPress={() => {}}
+            onPress={() => Alert.alert(j.title, `${j.detail}\n\nThis feature is coming soon.`)}
             style={({ pressed }) => [styles.card, shadow.card, pressed && styles.cardPressed]}
           >
             <View style={[styles.cardIcon, { backgroundColor: addAlpha(accentMap[j.accent], 0.1) }]}>

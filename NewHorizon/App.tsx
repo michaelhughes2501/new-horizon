@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -50,6 +50,20 @@ const navTheme = {
 };
 
 export default function App() {
+  // Lifted here (rather than local to NotificationsScreen) so the tab-bar
+  // badge count stays in sync with items the user has marked read.
+  const [readIds, setReadIds] = useState<Set<string>>(new Set());
+  const unreadCount = NOTIFICATIONS.filter((n) => n.unread && !readIds.has(n.id)).length;
+
+  const markRead = useCallback((id: string) => {
+    setReadIds((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+  }, []);
+
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
@@ -68,9 +82,10 @@ export default function App() {
             <Tab.Screen name="Feed" component={FeedScreen} options={{ tabBarLabel: 'The Yard' }} />
             <Tab.Screen
               name="Notifications"
-              component={NotificationsScreen}
-              options={{ tabBarLabel: 'Alerts', tabBarBadge: NOTIFICATIONS.filter(n => n.unread).length || undefined }}
-            />
+              options={{ tabBarLabel: 'Alerts', tabBarBadge: unreadCount || undefined }}
+            >
+              {() => <NotificationsScreen readIds={readIds} onMarkRead={markRead} />}
+            </Tab.Screen>
             <Tab.Screen name="Profile" component={ProfileScreen} />
           </Tab.Navigator>
         </NavigationContainer>

@@ -1,12 +1,19 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, radii, spacing, addAlpha } from '../lib/theme';
 import { NOTIFICATIONS } from '../lib/demoData';
 
-export default function NotificationsScreen() {
+type Props = {
+  readIds: Set<string>;
+  onMarkRead: (id: string) => void;
+};
+
+export default function NotificationsScreen({ readIds, onMarkRead }: Props) {
   const insets = useSafeAreaInsets();
-  const unread = NOTIFICATIONS.filter((n) => n.unread).length;
+
+  const isUnread = (id: string, defaultUnread: boolean) => defaultUnread && !readIds.has(id);
+  const unreadCount = NOTIFICATIONS.filter((n) => isUnread(n.id, n.unread)).length;
 
   return (
     <ScrollView
@@ -15,29 +22,38 @@ export default function NotificationsScreen() {
     >
       <View style={styles.header}>
         <Text style={styles.title}>Notifications</Text>
-        {unread > 0 && (
+        {unreadCount > 0 && (
           <View style={styles.badge}>
-            <Text style={styles.badgeText}>{unread} new</Text>
+            <Text style={styles.badgeText}>{unreadCount} new</Text>
           </View>
         )}
       </View>
 
       <View style={styles.list}>
-        {NOTIFICATIONS.map((n) => (
-          <View key={n.id} style={[styles.row, n.unread && styles.rowUnread]}>
-            <View style={styles.icon}>
-              <Text style={styles.iconText}>{n.icon}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.rowTitle}>{n.title}</Text>
-              <Text style={styles.rowDetail}>{n.detail}</Text>
-            </View>
-            <View style={styles.meta}>
-              <Text style={styles.time}>{n.time}</Text>
-              {n.unread && <View style={styles.dot} />}
-            </View>
-          </View>
-        ))}
+        {NOTIFICATIONS.map((n) => {
+          const unread = isUnread(n.id, n.unread);
+          return (
+            <Pressable
+              key={n.id}
+              onPress={() => onMarkRead(n.id)}
+              accessibilityRole="button"
+              accessibilityLabel={`${n.title}. ${n.detail}${unread ? '. Unread' : ''}`}
+              style={({ pressed }) => [styles.row, unread && styles.rowUnread, pressed && styles.rowPressed]}
+            >
+              <View style={styles.icon}>
+                <Text style={styles.iconText}>{n.icon}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.rowTitle}>{n.title}</Text>
+                <Text style={styles.rowDetail}>{n.detail}</Text>
+              </View>
+              <View style={styles.meta}>
+                <Text style={styles.time}>{n.time}</Text>
+                {unread && <View style={styles.dot} />}
+              </View>
+            </Pressable>
+          );
+        })}
       </View>
     </ScrollView>
   );
@@ -67,6 +83,7 @@ const styles = StyleSheet.create({
     borderColor: colors.mist,
   },
   rowUnread: { borderColor: addAlpha(colors.gold, 0.4), backgroundColor: '#FFFDF8' },
+  rowPressed: { opacity: 0.7 },
   icon: {
     width: 42,
     height: 42,
