@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, radii, spacing, addAlpha } from '../lib/theme';
 import { NOTIFICATIONS } from '../lib/demoData';
+import { NotificationsContext } from '../App';
 
-type Props = {
-  readIds: Set<string>;
-  onMarkRead: (id: string) => void;
-};
-
-export default function NotificationsScreen({ readIds, onMarkRead }: Props) {
+export default function NotificationsScreen() {
   const insets = useSafeAreaInsets();
+  const context = useContext(NotificationsContext);
+  if (!context) {
+    throw new Error('NotificationsScreen must be rendered within NotificationsContext.Provider');
+  }
+  const { readIds, markRead: onMarkRead } = context;
 
   const isUnread = (id: string, defaultUnread: boolean) => defaultUnread && !readIds.has(id);
   const unreadCount = NOTIFICATIONS.filter((n) => isUnread(n.id, n.unread)).length;
