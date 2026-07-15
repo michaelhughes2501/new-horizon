@@ -39,8 +39,10 @@ function PostCard({ post }: { post: FeedPost }) {
           <Text style={styles.actionText}>{post.comments}</Text>
         </View>
         <View style={{ flex: 1 }} />
-        <Pressable onPress={() => setLiked(true)} hitSlop={8} accessibilityRole="button">
-          <Text style={styles.respect}>Show Respect</Text>
+        <Pressable onPress={() => setLiked((v) => !v)} hitSlop={8} accessibilityRole="button">
+          <Text style={[styles.respect, liked && { color: colors.rose }]}>
+            {liked ? 'Respected' : 'Show Respect'}
+          </Text>
         </Pressable>
       </View>
     </View>
