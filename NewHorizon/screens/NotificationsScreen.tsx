@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
+import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing, addAlpha } from '../lib/theme';
 import { NOTIFICATIONS } from '../lib/demoData';
 
 export default function NotificationsScreen() {
   const insets = useSafeAreaInsets();
   const unread = NOTIFICATIONS.filter((n) => n.unread).length;
+
+  // Light (ivory) background all the way to the top — needs dark status bar icons.
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle('dark');
+    }, [])
+  );
 
   return (
     <ScrollView

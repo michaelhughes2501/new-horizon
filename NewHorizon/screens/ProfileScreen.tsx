@@ -1,6 +1,8 @@
-import React from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback } from 'react';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
+import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing } from '../lib/theme';
 import { STATS } from '../lib/demoData';
 import { BACKEND_READY } from '../lib/supabase';
@@ -16,6 +18,13 @@ const MENU = [
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
+
+  // Dark (charcoal) header sits behind the status bar — needs light icons.
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle('light');
+    }, [])
+  );
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: spacing.xxl }}>
@@ -42,7 +51,7 @@ export default function ProfileScreen() {
             key={m.label}
             accessibilityRole="button"
             accessibilityLabel={m.label}
-            onPress={() => {}}
+            onPress={() => Alert.alert(m.label, 'This feature is coming soon.')}
             style={({ pressed }) => [
               styles.menuRow,
               i < MENU.length - 1 && styles.menuDivider,
