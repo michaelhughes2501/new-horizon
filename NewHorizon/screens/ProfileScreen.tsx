@@ -20,7 +20,7 @@ function handleMenuPress(label: string, comingSoon: boolean) {
     return;
   }
   Alert.alert(
-    'Help & Crisis Support',
+    label,
     'If you are in crisis or need immediate help, call or text 988 to reach the Suicide & Crisis Lifeline — available 24/7, free and confidential.'
   );
 }
