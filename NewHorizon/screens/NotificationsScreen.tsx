@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
+import React, { useContext } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { NotificationsContext } from '../App';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, radii, spacing, addAlpha } from '../lib/theme';
 import { NOTIFICATIONS } from '../lib/demoData';
