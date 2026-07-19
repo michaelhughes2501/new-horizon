@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useIsFocused } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import { useFocusEffect } from '@react-navigation/native';
 import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
@@ -58,6 +60,7 @@ const renderItem = ({ item }: { item: FeedPost }) => <PostCard post={item} />;
 
 export default function FeedScreen() {
   const insets = useSafeAreaInsets();
+  const isFocused = useIsFocused();
 
   // This screen has a light (ivory) background right up to the status bar,
   // so it needs dark status bar icons — unlike Home/Profile, which have a
@@ -70,6 +73,8 @@ export default function FeedScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Light (ivory) content at the top of this tab needs dark status bar content. */}
+      {isFocused && <StatusBar style="dark" />}
       <FlatList
         data={FEED}
         keyExtractor={(p) => p.id}

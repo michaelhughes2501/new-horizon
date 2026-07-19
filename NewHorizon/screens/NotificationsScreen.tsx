@@ -1,6 +1,8 @@
 import React, { useCallback, useContext } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useIsFocused } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import { useFocusEffect } from '@react-navigation/native';
 import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing, addAlpha } from '../lib/theme';
@@ -9,6 +11,8 @@ import { NotificationsContext } from '../lib/notificationsContext';
 
 export default function NotificationsScreen() {
   const insets = useSafeAreaInsets();
+  const isFocused = useIsFocused();
+  const unread = NOTIFICATIONS.filter((n) => n.unread).length;
   const context = useContext(NotificationsContext);
   if (!context) {
     throw new Error('NotificationsScreen must be rendered within NotificationsContext.Provider');
@@ -37,6 +41,8 @@ export default function NotificationsScreen() {
       style={styles.container}
       contentContainerStyle={{ paddingBottom: spacing.xxl, paddingTop: insets.top + spacing.sm }}
     >
+      {/* Light (ivory) content at the top of this tab needs dark status bar content. */}
+      {isFocused && <StatusBar style="dark" />}
       <View style={styles.header}>
         <Text style={styles.title}>Notifications</Text>
         {unreadCount > 0 && (
