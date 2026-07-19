@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { colors, radii, spacing } from '../lib/theme';
 import { STATS } from '../lib/demoData';
 import { BACKEND_READY } from '../lib/supabase';
-
-const HEADER_SCROLL_THRESHOLD = 200;
+import { useHeaderOverlap } from '../lib/useHeaderOverlap';
 
 const MENU = [
   { icon: '👤', label: 'Edit Profile' },
@@ -21,14 +20,7 @@ const MENU = [
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
-  const [isHeaderOverlapping, setIsHeaderOverlapping] = useState(false);
-
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const overlapped = event.nativeEvent.contentOffset.y > HEADER_SCROLL_THRESHOLD;
-    if (overlapped !== isHeaderOverlapping) {
-      setIsHeaderOverlapping(overlapped);
-    }
-  };
+  const { isHeaderOverlapping, handleScroll } = useHeaderOverlap();
 
   return (
     <ScrollView
