@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
@@ -20,7 +20,8 @@ const MENU = [
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
-  const { isHeaderOverlapping, handleScroll } = useHeaderOverlap();
+  const [heroHeight, setHeroHeight] = useState<number | undefined>(undefined);
+  const { isHeaderOverlapping, handleScroll } = useHeaderOverlap(heroHeight);
 
   return (
     <ScrollView
@@ -32,7 +33,10 @@ export default function ProfileScreen() {
       {/* Dark hero header at the top of this tab needs light status bar content, but
           switches to dark once the ivory body scrolls underneath the status bar. */}
       {isFocused && <StatusBar style={isHeaderOverlapping ? 'dark' : 'light'} />}
-      <View style={[styles.header, { paddingTop: insets.top + spacing.xl }]}>
+      <View
+        style={[styles.header, { paddingTop: insets.top + spacing.xl }]}
+        onLayout={(e) => setHeroHeight(e.nativeEvent.layout.height)}
+      >
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>MJ</Text>
         </View>
