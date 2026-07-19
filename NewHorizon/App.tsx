@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { createContext, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -14,6 +14,7 @@ import HomeScreen from './screens/HomeScreen';
 import FeedScreen from './screens/FeedScreen';
 import NotificationsScreen from './screens/NotificationsScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import { NotificationsContext } from './lib/notificationsContext';
 
 type TabParamList = {
   Home: undefined;
@@ -49,11 +50,6 @@ const navTheme = {
   colors: { ...DefaultTheme.colors, background: colors.ivory, card: colors.white, primary: colors.gold },
 };
 
-export const NotificationsContext = createContext<{
-  readIds: Set<string>;
-  markRead: (id: string) => void;
-} | null>(null);
-
 export default function App() {
   // Lifted here (rather than local to NotificationsScreen) so the tab-bar
   // badge count stays in sync with items the user has marked read.
@@ -72,7 +68,7 @@ export default function App() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
-        <NotificationsContext.Provider value={{ readIds, markRead }}>
+        <NotificationsContext.Provider value={{ hasRead: (id) => readIds.has(id), markRead }}>
           <NavigationContainer theme={navTheme}>
             <Tab.Navigator
               screenOptions={({ route }) => ({

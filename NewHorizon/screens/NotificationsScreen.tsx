@@ -1,13 +1,11 @@
-import React, { useContext } from 'react';
-import React, { useContext } from 'react';
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { NotificationsContext } from '../App';
-import { NotificationsContext } from '../App';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
+import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing, addAlpha } from '../lib/theme';
 import { NOTIFICATIONS } from '../lib/demoData';
-import { NotificationsContext } from '../App';
+import { NotificationsContext } from '../lib/notificationsContext';
 
 export default function NotificationsScreen() {
   const insets = useSafeAreaInsets();
@@ -15,10 +13,24 @@ export default function NotificationsScreen() {
   if (!context) {
     throw new Error('NotificationsScreen must be rendered within NotificationsContext.Provider');
   }
-  const { readIds, markRead: onMarkRead } = context;
+  const { hasRead, markRead: onMarkRead } = context;
 
-  const isUnread = (id: string, defaultUnread: boolean) => defaultUnread && !readIds.has(id);
+  const isUnread = (id: string, defaultUnread: boolean) => defaultUnread && !hasRead(id);
   const unreadCount = NOTIFICATIONS.filter((n) => isUnread(n.id, n.unread)).length;
+
+  // Light (ivory) background all the way to the top — needs dark status bar icons.
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle('dark');
+    }, [])
+  );
+
+  // Light (ivory) background all the way to the top — needs dark status bar icons.
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle('dark');
+    }, [])
+  );
 
   return (
     <ScrollView

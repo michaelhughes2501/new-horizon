@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
+import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
 import { STATS, JOURNEY } from '../lib/demoData';
 
@@ -13,6 +15,13 @@ const accentMap = {
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
+
+  // Dark (charcoal) hero sits behind the status bar — needs light icons.
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle('light');
+    }, [])
+  );
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: spacing.xxl }}>
@@ -48,7 +57,7 @@ export default function HomeScreen() {
             key={j.title}
             accessibilityRole="button"
             accessibilityLabel={`${j.title}. ${j.detail}`}
-            onPress={() => Alert.alert(j.title, `${j.detail}\n\nThis feature is coming soon.`)}
+            onPress={() => Alert.alert(j.title, 'This feature is coming soon.')}
             style={({ pressed }) => [styles.card, shadow.card, pressed && styles.cardPressed]}
           >
             <View style={[styles.cardIcon, { backgroundColor: addAlpha(accentMap[j.accent], 0.1) }]}>
