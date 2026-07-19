@@ -3,25 +3,48 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import React, { useCallback } from 'react';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
+import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing } from '../lib/theme';
 import { STATS } from '../lib/demoData';
 import { BACKEND_READY } from '../lib/supabase';
 import { useHeaderOverlap } from '../lib/useHeaderOverlap';
 
 const MENU = [
-  { icon: '👤', label: 'Edit Profile' },
-  { icon: '🔒', label: 'Privacy & Safety' },
-  { icon: '💼', label: 'My Applications' },
-  { icon: '🔖', label: 'Saved Resources' },
-  { icon: '🔔', label: 'Notification Settings' },
-  { icon: '❓', label: 'Help & Crisis Support' },
-];
+  { icon: '👤', label: 'Edit Profile', comingSoon: true },
+  { icon: '🔒', label: 'Privacy & Safety', comingSoon: true },
+  { icon: '💼', label: 'My Applications', comingSoon: true },
+  { icon: '🔖', label: 'Saved Resources', comingSoon: true },
+  { icon: '🔔', label: 'Notification Settings', comingSoon: true },
+  { icon: '❓', label: 'Help & Crisis Support', comingSoon: false },
+] as const;
+
+function handleMenuPress(label: string, comingSoon: boolean) {
+  if (comingSoon) {
+    Alert.alert(label, 'This feature is coming soon.');
+    return;
+  }
+  Alert.alert(
+    label,
+    'If you are in crisis or need immediate help, call or text 988 to reach the Suicide & Crisis Lifeline — available 24/7, free and confidential.'
+  );
+}
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
   const [heroHeight, setHeroHeight] = useState<number | undefined>(undefined);
   const { isHeaderOverlapping, handleScroll } = useHeaderOverlap(heroHeight);
+
+  // Dark (charcoal) header sits behind the status bar — needs light icons.
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle('light');
+    }, [])
+  );
 
   return (
     <ScrollView
@@ -59,7 +82,7 @@ export default function ProfileScreen() {
             key={m.label}
             accessibilityRole="button"
             accessibilityLabel={m.label}
-            onPress={() => {}}
+            onPress={() => handleMenuPress(m.label, m.comingSoon)}
             style={({ pressed }) => [
               styles.menuRow,
               i < MENU.length - 1 && styles.menuDivider,

@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,6 +13,7 @@ import HomeScreen from './screens/HomeScreen';
 import FeedScreen from './screens/FeedScreen';
 import NotificationsScreen from './screens/NotificationsScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import { NotificationsContext } from './lib/notificationsContext';
 
 type TabParamList = {
   Home: undefined;
@@ -49,6 +50,20 @@ const navTheme = {
 };
 
 export default function App() {
+  // Lifted here (rather than local to NotificationsScreen) so the tab-bar
+  // badge count stays in sync with items the user has marked read.
+  const [readIds, setReadIds] = useState<Set<string>>(new Set());
+  const unreadCount = NOTIFICATIONS.filter((n) => n.unread && !readIds.has(n.id)).length;
+
+  const markRead = useCallback((id: string) => {
+    setReadIds((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+  }, []);
+
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
@@ -73,6 +88,30 @@ export default function App() {
             <Tab.Screen name="Profile" component={ProfileScreen} />
           </Tab.Navigator>
         </NavigationContainer>
+        <NotificationsContext.Provider value={{ hasRead: (id) => readIds.has(id), markRead }}>
+          <NavigationContainer theme={navTheme}>
+            <Tab.Navigator
+              screenOptions={({ route }) => ({
+                headerShown: false,
+                tabBarActiveTintColor: colors.gold,
+                tabBarInactiveTintColor: colors.slate,
+                tabBarStyle: styles.tabBar,
+                tabBarLabelStyle: styles.tabLabel,
+                tabBarIcon: ({ focused }) => <TabIcon name={route.name} focused={focused} />,
+              })}
+            >
+              <Tab.Screen name="Home" component={HomeScreen} />
+              <Tab.Screen name="Feed" component={FeedScreen} options={{ tabBarLabel: 'The Yard' }} />
+              <Tab.Screen
+                name="Notifications"
+                component={NotificationsScreen}
+                options={{ tabBarLabel: 'Alerts', tabBarBadge: unreadCount || undefined }}
+              />
+              <Tab.Screen name="Profile" component={ProfileScreen} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </NotificationsContext.Provider>
+        <StatusBar style="light" />
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
