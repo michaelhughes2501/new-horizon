@@ -12,10 +12,10 @@ The app lives under [`NewHorizon/`](./NewHorizon). **Open the repository root in
 
 The authoritative versions live in `NewHorizon/package.json` — check there if anything below drifts. At time of writing:
 
-- Expo SDK 56 (`expo: ~56.0.3`), React Native `0.85.3`, React 19
-- TypeScript `~6.0.3` (strict mode, `extends "expo/tsconfig.base"`)
+- Expo SDK 57 (`expo: ~57.0.6`), React Native `0.86.0`, React 19
+- TypeScript `~7.0.2` (strict mode, `extends "expo/tsconfig.base"`)
 - Navigation: `@react-navigation/native` + `@react-navigation/bottom-tabs` (v7.x)
-- Supabase JS client (`@supabase/supabase-js ^2.106.1`) + `expo-secure-store` for token storage
+- Supabase JS client (`@supabase/supabase-js ^2.108.2`) + `expo-secure-store` for token storage
 - Push: `expo-notifications` + `expo-device`
 - `react-native-url-polyfill` (required for the Supabase JS client)
 - New Architecture (`newArchEnabled: true`) and edge-to-edge enabled on Android (`com.anonymous.NewHorizon`)
@@ -49,7 +49,7 @@ Only `EXPO_PUBLIC_*` vars are exposed to the JS bundle. The Supabase **service_r
 - `NewHorizon/lib/supabase.ts` — Supabase client. Uses a custom `ExpoSecureStoreAdapter` (wrapping `expo-secure-store`) for auth token persistence + auto-refresh.
 - `NewHorizon/app.json` — Expo config (icons, splash, `expo-secure-store` plugin, Android package `com.anonymous.NewHorizon`, edge-to-edge).
 - `NewHorizon/assets/` — icon, splash, adaptive icon, favicon.
-- `NewHorizon/package.json` — pinned to the SDK 56 dependency matrix; prefer `npx expo install <pkg>` over plain `npm install <pkg>` so new deps match the SDK.
+- `NewHorizon/package.json` — pinned to the SDK 57 dependency matrix; prefer `npx expo install <pkg>` over plain `npm install <pkg>` so new deps match the SDK.
 
 ## Conventions to follow
 
@@ -59,7 +59,7 @@ Only `EXPO_PUBLIC_*` vars are exposed to the JS bundle. The Supabase **service_r
 - **Single navigation library**: keep navigation declarative under `@react-navigation/native`; don't introduce a second router.
 - **Performance**: prefer `expo-image` over `<Image />` for cached / progressive image loading (compatible with the New Architecture). Install it first with `npx expo install expo-image` — it isn't in `package.json` yet.
 - **Web smoke test**: run `npm run web` before opening a native simulator — same JS code path, much faster feedback loop.
-- **SDK installs**: `npx expo install <pkg>` (not `npm install`) so version pins stay aligned with SDK 56.
+- **SDK installs**: `npx expo install <pkg>` (not `npm install`) so version pins stay aligned with SDK 57.
 
 ## CI
 

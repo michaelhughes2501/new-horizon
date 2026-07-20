@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useIsFocused } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
+import React, { useCallback } from 'react';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
+import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
 import { STATS, JOURNEY } from '../lib/demoData';
+import { useHeaderOverlap } from '../lib/useHeaderOverlap';
 
 const accentMap = {
   gold: colors.gold,
@@ -13,11 +21,32 @@ const accentMap = {
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
+  const isFocused = useIsFocused();
+  const [heroHeight, setHeroHeight] = useState<number | undefined>(undefined);
+  const { isHeaderOverlapping, handleScroll } = useHeaderOverlap(heroHeight);
+
+  // Dark (charcoal) hero sits behind the status bar — needs light icons.
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle('light');
+    }, [])
+  );
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: spacing.xxl }}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: spacing.xxl }}
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
+    >
+      {/* Dark hero header at the top of this tab needs light status bar content, but
+          switches to dark once the ivory body scrolls underneath the status bar. */}
+      {isFocused && <StatusBar style={isHeaderOverlapping ? 'dark' : 'light'} />}
       {/* Hero */}
-      <View style={[styles.hero, { paddingTop: insets.top + spacing.xl }]}>
+      <View
+        style={[styles.hero, { paddingTop: insets.top + spacing.xl }]}
+        onLayout={(e) => setHeroHeight(e.nativeEvent.layout.height)}
+      >
         <View style={styles.heroGlow} />
         <Text style={styles.kicker}>NEW HORIZON</Text>
         <Text style={styles.heroTitle}>Good morning,</Text>
@@ -48,7 +77,7 @@ export default function HomeScreen() {
             key={j.title}
             accessibilityRole="button"
             accessibilityLabel={`${j.title}. ${j.detail}`}
-            onPress={() => {}}
+            onPress={() => Alert.alert(j.title, 'This feature is coming soon.')}
             style={({ pressed }) => [styles.card, shadow.card, pressed && styles.cardPressed]}
           >
             <View style={[styles.cardIcon, { backgroundColor: addAlpha(accentMap[j.accent], 0.1) }]}>
