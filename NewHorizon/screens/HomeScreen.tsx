@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useIsFocused } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
-import { setStatusBarStyle } from 'expo-status-bar';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
+import { StatusBar, setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
 import { STATS, JOURNEY } from '../lib/demoData';
 import { useHeaderOverlap } from '../lib/useHeaderOverlap';
