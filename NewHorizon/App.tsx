@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
+import { StatusBar } from 'expo-status-bar';
 
 import { colors } from './lib/theme';
 import { NOTIFICATIONS } from './lib/demoData';
@@ -67,27 +68,6 @@ export default function App() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
-        <NavigationContainer theme={navTheme}>
-          <Tab.Navigator
-            screenOptions={({ route }) => ({
-              headerShown: false,
-              tabBarActiveTintColor: colors.gold,
-              tabBarInactiveTintColor: colors.slate,
-              tabBarStyle: styles.tabBar,
-              tabBarLabelStyle: styles.tabLabel,
-              tabBarIcon: ({ focused }) => <TabIcon name={route.name} focused={focused} />,
-            })}
-          >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Feed" component={FeedScreen} options={{ tabBarLabel: 'The Yard' }} />
-            <Tab.Screen
-              name="Notifications"
-              component={NotificationsScreen}
-              options={{ tabBarLabel: 'Alerts', tabBarBadge: NOTIFICATIONS.filter(n => n.unread).length || undefined }}
-            />
-            <Tab.Screen name="Profile" component={ProfileScreen} />
-          </Tab.Navigator>
-        </NavigationContainer>
         <NotificationsContext.Provider value={{ hasRead: (id) => readIds.has(id), markRead }}>
           <NavigationContainer theme={navTheme}>
             <Tab.Navigator
