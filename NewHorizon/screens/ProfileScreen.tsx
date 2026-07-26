@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import React, { useCallback } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
-import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing } from '../lib/theme';
 import { STATS } from '../lib/demoData';
 import { BACKEND_READY } from '../lib/supabase';
@@ -38,13 +33,6 @@ export default function ProfileScreen() {
   const isFocused = useIsFocused();
   const [heroHeight, setHeroHeight] = useState<number | undefined>(undefined);
   const { isHeaderOverlapping, handleScroll } = useHeaderOverlap(heroHeight);
-
-  // Dark (charcoal) header sits behind the status bar — needs light icons.
-  useFocusEffect(
-    useCallback(() => {
-      setStatusBarStyle('light');
-    }, [])
-  );
 
   return (
     <ScrollView
