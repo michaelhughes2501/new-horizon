@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
 import { FEED, FeedPost } from '../lib/demoData';
+import { EmptyState } from '../components/EmptyState';
 
 function PostCard({ post }: { post: FeedPost }) {
   const [liked, setLiked] = useState(false);
@@ -85,6 +86,13 @@ export default function FeedScreen() {
             <Text style={styles.title}>The Yard</Text>
             <Text style={styles.subtitle}>What the community is sharing today</Text>
           </View>
+        }
+        ListEmptyComponent={
+          <EmptyState
+            icon="👥"
+            title="The Yard is quiet right now"
+            detail="Check back soon — new posts from the community will show up here."
+          />
         }
         showsVerticalScrollIndicator={false}
       />

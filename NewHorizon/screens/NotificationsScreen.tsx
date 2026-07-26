@@ -8,6 +8,7 @@ import { setStatusBarStyle } from 'expo-status-bar';
 import { colors, radii, spacing, addAlpha } from '../lib/theme';
 import { NOTIFICATIONS } from '../lib/demoData';
 import { NotificationsContext } from '../lib/notificationsContext';
+import { EmptyState } from '../components/EmptyState';
 
 export default function NotificationsScreen() {
   const insets = useSafeAreaInsets();
@@ -21,13 +22,6 @@ export default function NotificationsScreen() {
 
   const isUnread = (id: string, defaultUnread: boolean) => defaultUnread && !hasRead(id);
   const unreadCount = NOTIFICATIONS.filter((n) => isUnread(n.id, n.unread)).length;
-
-  // Light (ivory) background all the way to the top — needs dark status bar icons.
-  useFocusEffect(
-    useCallback(() => {
-      setStatusBarStyle('dark');
-    }, [])
-  );
 
   // Light (ivory) background all the way to the top — needs dark status bar icons.
   useFocusEffect(
@@ -52,32 +46,40 @@ export default function NotificationsScreen() {
         )}
       </View>
 
-      <View style={styles.list}>
-        {NOTIFICATIONS.map((n) => {
-          const unread = isUnread(n.id, n.unread);
-          return (
-            <Pressable
-              key={n.id}
-              onPress={() => onMarkRead(n.id)}
-              accessibilityRole="button"
-              accessibilityLabel={`${n.title}. ${n.detail}${unread ? '. Unread' : ''}`}
-              style={({ pressed }) => [styles.row, unread && styles.rowUnread, pressed && styles.rowPressed]}
-            >
-              <View style={styles.icon}>
-                <Text style={styles.iconText}>{n.icon}</Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.rowTitle}>{n.title}</Text>
-                <Text style={styles.rowDetail}>{n.detail}</Text>
-              </View>
-              <View style={styles.meta}>
-                <Text style={styles.time}>{n.time}</Text>
-                {unread && <View style={styles.dot} />}
-              </View>
-            </Pressable>
-          );
-        })}
-      </View>
+      {NOTIFICATIONS.length === 0 ? (
+        <EmptyState
+          icon="🔔"
+          title="No notifications yet"
+          detail="We'll let you know here when there's something new — connections, job matches, and reminders."
+        />
+      ) : (
+        <View style={styles.list}>
+          {NOTIFICATIONS.map((n) => {
+            const unread = isUnread(n.id, n.unread);
+            return (
+              <Pressable
+                key={n.id}
+                onPress={() => onMarkRead(n.id)}
+                accessibilityRole="button"
+                accessibilityLabel={`${n.title}. ${n.detail}${unread ? '. Unread' : ''}`}
+                style={({ pressed }) => [styles.row, unread && styles.rowUnread, pressed && styles.rowPressed]}
+              >
+                <View style={styles.icon}>
+                  <Text style={styles.iconText}>{n.icon}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.rowTitle}>{n.title}</Text>
+                  <Text style={styles.rowDetail}>{n.detail}</Text>
+                </View>
+                <View style={styles.meta}>
+                  <Text style={styles.time}>{n.time}</Text>
+                  {unread && <View style={styles.dot} />}
+                </View>
+              </Pressable>
+            );
+          })}
+        </View>
+      )}
     </ScrollView>
   );
 }
