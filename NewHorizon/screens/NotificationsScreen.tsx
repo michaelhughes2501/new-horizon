@@ -29,13 +29,6 @@ export default function NotificationsScreen() {
     }, [])
   );
 
-  // Light (ivory) background all the way to the top — needs dark status bar icons.
-  useFocusEffect(
-    useCallback(() => {
-      setStatusBarStyle('dark');
-    }, [])
-  );
-
   return (
     <ScrollView
       style={styles.container}
