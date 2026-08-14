@@ -1,0 +1,12 @@
+{
+  "region": "us-west-1",
+  "app": {
+    "name": "newhorizon",
+    "root": "NewHorizon",
+    "framework": "nextjs",
+    "httpPort": 3001,
+    "build": {
+      "command": "next build"
+    }
+  }
+}
