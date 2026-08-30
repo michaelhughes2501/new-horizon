@@ -1,3 +1,8 @@
+import React, { useState } from 'react';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useIsFocused } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -19,13 +24,6 @@ export default function HomeScreen() {
   const isFocused = useIsFocused();
   const [heroHeight, setHeroHeight] = useState<number | undefined>(undefined);
   const { isHeaderOverlapping, handleScroll } = useHeaderOverlap(heroHeight);
-
-  // Dark (charcoal) hero sits behind the status bar — needs light icons.
-  useFocusEffect(
-    useCallback(() => {
-      setStatusBarStyle('light');
-    }, [])
-  );
 
   return (
     <ScrollView
