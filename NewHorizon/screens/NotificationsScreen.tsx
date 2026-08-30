@@ -20,6 +20,13 @@ export default function NotificationsScreen() {
   const isUnread = (id: string, defaultUnread: boolean) => defaultUnread && !hasRead(id);
   const unreadCount = NOTIFICATIONS.filter((n) => isUnread(n.id, n.unread)).length;
 
+  // Light (ivory) background all the way to the top — needs dark status bar icons.
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle('dark');
+    }, [])
+  );
+
   return (
     <ScrollView
       style={styles.container}

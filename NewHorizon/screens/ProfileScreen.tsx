@@ -3,6 +3,11 @@ import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-nati
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
+import React, { useCallback, useState } from 'react';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { setStatusBarStyle, StatusBar } from 'expo-status-bar';
 import { colors, radii, spacing } from '../lib/theme';
 import { STATS } from '../lib/demoData';
 import { BACKEND_READY } from '../lib/supabase';
