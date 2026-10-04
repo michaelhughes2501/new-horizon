@@ -1,8 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { StatusBar, setStatusBarStyle } from 'expo-status-bar';
+import { useIsFocused } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import { colors, radii, spacing, shadow, addAlpha } from '../lib/theme';
 import { FEED, FeedPost } from '../lib/demoData';
 
@@ -59,15 +61,6 @@ const renderItem = ({ item }: { item: FeedPost }) => <PostCard post={item} />;
 export default function FeedScreen() {
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
-
-  // This screen has a light (ivory) background right up to the status bar,
-  // so it needs dark status bar icons — unlike Home/Profile, which have a
-  // dark hero behind the status bar and need light icons.
-  useFocusEffect(
-    useCallback(() => {
-      setStatusBarStyle('dark');
-    }, [])
-  );
 
   return (
     <View style={styles.container}>
