@@ -19,6 +19,7 @@
     "expo-constants": "~57.0.6",
     "@react-navigation/bottom-tabs": "^7.18.11",
     "@react-navigation/native": "^7.3.1",
+    "@supabase/supabase-js": "^2.112.4",
     "@supabase/supabase-js": "^2.108.2",
     "expo": "~57.0.8",
     "expo-constants": "~57.0.7",
