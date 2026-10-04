@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { StatusBar, setStatusBarStyle } from 'expo-status-bar';
 import { useIsFocused } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { colors, radii, spacing, addAlpha } from '../lib/theme';
