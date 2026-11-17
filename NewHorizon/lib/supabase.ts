@@ -1,11 +1,29 @@
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 
+// Native (iOS/Android): session tokens live in the OS keychain/keystore.
 const ExpoSecureStoreAdapter = {
   getItem: (key: string) => SecureStore.getItemAsync(key),
   setItem: (key: string, value: string) => SecureStore.setItemAsync(key, value),
   removeItem: (key: string) => SecureStore.deleteItemAsync(key),
 };
+
+// Web: expo-secure-store has no web implementation (its calls throw), so fall
+// back to the browser's localStorage — the same storage supabase-js uses by
+// default in browsers. Guarded for non-browser contexts (e.g. static render).
+const webStorage = typeof globalThis.localStorage !== 'undefined' ? globalThis.localStorage : null;
+const WebStorageAdapter = {
+  getItem: async (key: string) => webStorage?.getItem(key) ?? null,
+  setItem: async (key: string, value: string) => {
+    webStorage?.setItem(key, value);
+  },
+  removeItem: async (key: string) => {
+    webStorage?.removeItem(key);
+  },
+};
+
+const authStorage = Platform.OS === 'web' ? WebStorageAdapter : ExpoSecureStoreAdapter;
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? '';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
@@ -34,7 +52,7 @@ export const supabase = createClient(
   supabaseAnonKey || 'preview-anon-key',
   {
     auth: {
-      storage: ExpoSecureStoreAdapter,
+      storage: authStorage,
       autoRefreshToken: BACKEND_READY,
       persistSession: true,
       detectSessionInUrl: false,
